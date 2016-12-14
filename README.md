@@ -5,7 +5,8 @@ cd utp_com
 ### How to change images
 cp XXX.img images/files/android
 
-referance:
-<https://github.com/ixonos/utp_com>
-<https://github.com/boundarydevices/imx_usb_loader>
+###referance:
+[https://github.com/ixonos/utp_com](https://github.com/ixonos/utp_com)
+
+[https://github.com/boundarydevices/imx_usb_loader](https://github.com/boundarydevices/imx_usb_loader)
 
