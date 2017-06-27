@@ -46,11 +46,11 @@ DEVICE=
 
 check_parameter
 
-IMX_USB_PATH=/home/benson/imx6_download_tool/imx_usb_loader
-UTP_COM_PATH=/home/benson/imx6_download_tool/utp_com/
+IMX_USB_PATH=`pwd`/../imx_usb_loader
+UTP_COM_PATH=`pwd`/../utp_com/
 
-FLASH_IMAGE_DIR=/home/benson/imx6_download_tool/images/files/android
-MKSDCARD_DIR=/home/benson/imx6_download_tool/images
+FLASH_IMAGE_DIR=`pwd`/../images/files/android
+MKSDCARD_DIR=`pwd`/../images
 
 # Flash flashing os
 echo "Loading U-boot and Kernel."
