@@ -74,10 +74,15 @@ echo "Loading Initramfs."
 for i in {1..30}
 do
 	#DEVICE=/dev/sdc
-	DEVICE=`ls -l /dev/sd* | grep "8,\s*32" | sed "s/^.*\/d/\/d/"` 
+	#DEVICE=`ls -l /dev/sd* | grep "8,\s*32" | sed "s/^.*\/d/\/d/"` 
+	DEVICE=`lsblk | grep "512B  0 disk" | sed "s/ .*$//" | sed "s/^/\/dev\//"`
+
 
 	if [ -n "$DEVICE" ]; then
+		echo "found device, you device is \"$DEVICE\""
 		break
+	else
+		echo "your device is \"$DEVICE\", retry $i"
 	fi
 
 	sleep 1
