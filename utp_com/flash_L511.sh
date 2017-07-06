@@ -11,8 +11,12 @@ check_parameter(){
 
   if [ "x$parameter1" = "xboot" -o "x$parameter1" = "xbootimage" ]; then
 	  CMD="boot"
+  elif [ "x$parameter1" = "xsystem" -o "x$parameter1" = "xsystemimage" ]; then
+	  CMD="system"
+  elif [ "x$parameter1" = "xuboot" -o "x$parameter1" = "xbootloader" ]; then
+	  CMD="uboot"
   elif [ "x$parameter1" = "xh" -o "x$parameter1" = "xhelp" ]; then
-	  echo "usage: ./flash_L511.sh [boot] [system]"
+	  echo "usage: ./flash_L511.sh [boot] [system] [uboot]"
   fi
 }
 
@@ -38,6 +42,55 @@ only_flash_boot(){
   exit 1
 }
 
+only_flash_system(){
+  echo "only flash system.img"
+  cd $UTP_COM_PATH
+  
+  echo "Formatting system partition"
+  sudo ./utp_com -d $DEVICE -c "$ mkfs.ext4  -E nodiscard /dev/mmcblk3p5"
+
+  echo "change size of tmpfs"
+  sudo ./utp_com -d $DEVICE -c "$ mount -o remount,size=512M rootfs /"
+
+  # Sending and writting system.img
+  echo "Sending and writting system.img"
+  sudo ./utp_com -d $DEVICE -c "send" -f ${FLASH_IMAGE_DIR}/system.img
+
+  echo "writting sparse system.img"
+  sudo ./utp_com -d $DEVICE -c "$ simg2img \$FILE /dev/mmcblk3p5"
+
+  echo "Finishing write"
+  sudo ./utp_com -d $DEVICE -c "frf"
+
+  # Done
+  echo "Done"
+  sudo ./utp_com -d $DEVICE -c "$ echo Update Complete!"
+  exit 1
+}
+
+only_flash_uboot(){
+
+  echo "only flash uboot.img"
+  cd $UTP_COM_PATH
+
+  echo "clear u-boot arg"
+  ./utp_com -d $DEVICE -c "$ dd if=/dev/zero of=/dev/mmcblk3 bs=1k seek=384 conv=fsync count=129"
+
+  echo "access boot partition 1"
+  ./utp_com -d $DEVICE -c "$ echo 0 > /sys/block/mmcblk3boot0/force_ro"
+
+  # Sending U-Boot
+  echo "Sending U-Boot"
+  ./utp_com -d $DEVICE -c "send" -f ${FLASH_IMAGE_DIR}/u-boot-imx6q.imx
+  # write U-Boot to sd card
+  echo "write U-Boot to sd card"
+  ./utp_com -d $DEVICE -c "$ dd if=\$FILE of=/dev/mmcblk3boot0 bs=512 seek=2"
+
+  # Done
+  echo "Done"
+  ./utp_com -d $DEVICE -c "$ echo Update Complete!"
+  exit 1
+}
 
 input_num=$#
 parameter1=$1
@@ -104,6 +157,10 @@ fi
 
 if [ "x$CMD" = "xboot" ]; then
 	only_flash_boot
+elif [ "x$CMD" = "xsystem" ]; then
+	only_flash_system
+elif [ "x$CMD" = "xuboot" ]; then
+	only_flash_uboot
 fi
 
 
