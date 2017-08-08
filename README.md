@@ -7,6 +7,9 @@ Move to the utp_com folder, and then run the flash.sh script
 ###### For Android L 5.1.1
 #cd utp_com  
 #./flash_L511.sh
+###### For Android N 7.1.1
+#cd utp_com  
+#./flash_N711.sh
 
 ***
 ### How to change images
