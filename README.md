@@ -1,14 +1,12 @@
 ### How to use
 Move to the utp_com folder, and then run the flash.sh script
-- - -
-#### For Android JB 4.2.2 
-#cd utp_com
+
+###### For Android JB 4.2.2 
+#cd utp_com  
 #./flash.sh
-- - -
-#### For Android L 5.1.1
-#cd utp_com
+###### For Android L 5.1.1
+#cd utp_com  
 #./flash_L511.sh
-- - -
 
 ***
 ### How to change images
