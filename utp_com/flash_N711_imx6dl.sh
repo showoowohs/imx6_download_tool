@@ -1,5 +1,5 @@
 #!/bin/bash
-# for imx6 android 5.1.1
+# for imx6dl android 7.1.1
 
 check_parameter(){
   #echo "call check_parameter()"
@@ -28,7 +28,7 @@ only_flash_boot(){
 
   # Sending kernel uImage
   echo "Sending kernel uImage"
-  ./utp_com -d $DEVICE -c "send" -f ${FLASH_IMAGE_DIR}/boot-imx6q.img
+  ./utp_com -d $DEVICE -c "send" -f ${FLASH_IMAGE_DIR}/boot-imx6dl.img
   # write boot.img
   echo "write boot.img"
   ./utp_com -d $DEVICE -c "$ dd if=\$FILE of=/dev/mmcblk3p1"
@@ -81,7 +81,7 @@ only_flash_uboot(){
 
   # Sending U-Boot
   echo "Sending U-Boot"
-  ./utp_com -d $DEVICE -c "send" -f ${FLASH_IMAGE_DIR}/u-boot-imx6q.imx
+  ./utp_com -d $DEVICE -c "send" -f ${FLASH_IMAGE_DIR}/u-boot-imx6dl.imx
   # write U-Boot to sd card
   echo "write U-Boot to sd card"
   ./utp_com -d $DEVICE -c "$ dd if=\$FILE of=/dev/mmcblk3boot0 bs=512 seek=2"
@@ -149,7 +149,7 @@ elif [ ! -e $DEVICE ]; then
 	exit 1
 fi
 
-lsusb | grep "15a2\:0054" && PID=1
+lsusb | grep "15a2\:0061" && PID=1
 
 if [ ! "x$PID" = "x" ]; then
   exit
@@ -187,7 +187,7 @@ echo "access boot partition 1"
 
 # Sending U-Boot
 echo "Sending U-Boot"
-./utp_com -d $DEVICE -c "send" -f ${FLASH_IMAGE_DIR}/u-boot-imx6q.imx
+./utp_com -d $DEVICE -c "send" -f ${FLASH_IMAGE_DIR}/u-boot-imx6dl.imx
 # write U-Boot to sd card
 echo "write U-Boot to sd card"
 ./utp_com -d $DEVICE -c "$ dd if=\$FILE of=/dev/mmcblk3boot0 bs=512 seek=2"
@@ -203,7 +203,7 @@ echo "Formatting sd partition"
 
 # Sending kernel uImage
 echo "Sending kernel uImage"
-./utp_com -d $DEVICE -c "send" -f ${FLASH_IMAGE_DIR}/boot-imx6q.img
+./utp_com -d $DEVICE -c "send" -f ${FLASH_IMAGE_DIR}/boot-imx6dl.img
 # write boot.img
 echo "write boot.img"
 ./utp_com -d $DEVICE -c "$ dd if=\$FILE of=/dev/mmcblk3p1"
@@ -229,7 +229,7 @@ echo "writting sparse system.img"
 
 # Sending and writting recovery.img
 echo "Sending and writting recovery.img"
-./utp_com -d $DEVICE -c "pipe dd of=/dev/mmcblk3p2 bs=512" -f ${FLASH_IMAGE_DIR}/recovery-imx6q.img
+./utp_com -d $DEVICE -c "pipe dd of=/dev/mmcblk3p2 bs=512" -f ${FLASH_IMAGE_DIR}/recovery-imx6dl.img
 
 echo "Sync file system"
 ./utp_com -d $DEVICE -c "$ sync"
